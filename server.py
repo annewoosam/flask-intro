@@ -14,17 +14,31 @@ AWESOMENESS = [
     'wonderful', 'smashing', 'lovely']
 
 
+#add triple quotes in return to multiline html
+#add link as <a href="link">description</a>
+#link is /hello for app route to head to next
 @app.route('/')
 def start_here():
     """Home page."""
 
-    return "<!doctype html><html>Hi! This is the home page.</html>"
+    return """
+    <!doctype html>
+    <html>
+      <head>
+        <title>Start Here</title>
+      </head>
+      <body>
+        <a href="/hello">Take me to the start</a>
+      </body>
+    </html>
+    """
 
 
+#add radio
 @app.route('/hello')
 def say_hello():
     """Say hello and prompt for user's name."""
-
+# added radio and compliment request line
     return """
     <!doctype html>
     <html>
@@ -34,7 +48,12 @@ def say_hello():
       <body>
         <h1>Hi There!</h1>
         <form action="/greet">
-          What's your name? <input type="text" name="person">
+          <p>What's your name? <input type="text" name="person"></p>
+          <p>What compliment do you prefer?</p>
+          <input type="radio" name="compliment" value="Pretty">Pretty</input>
+          <input type="radio" name="compliment" value="Handsome">Handsome</input>
+          <input type="radio" name="compliment" value="Awesome">Awesome</input>
+          <input type="radio" name="compliment" value="Cool">Cool</input>
           <input type="submit" value="Submit">
         </form>
       </body>
@@ -42,25 +61,25 @@ def say_hello():
     """
 
 
+#sub variables in curly braces, remove .format
 @app.route('/greet')
 def greet_person():
     """Get user by name."""
 
     player = request.args.get("person")
+    compliment = request.args.get("compliment")
 
-    compliment = choice(AWESOMENESS)
-
-    return """
+    return f"""
     <!doctype html>
     <html>
       <head>
         <title>A Compliment</title>
       </head>
       <body>
-        Hi, {}! I think you're {}!
+        Hi, {player}! I think you're {compliment}!
       </body>
     </html>
-    """.format(player, compliment)
+    """
 
 
 if __name__ == '__main__':
